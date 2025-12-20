@@ -91,7 +91,7 @@ export const ProductCardWithAuth = ({
       onProductClick(product);
     } else {
       // Navigation vers la page détail avec slug
-      navigate(`/product/${product.slug}`);
+      navigate(`/product/${product._id}`);
     }
   };
 
