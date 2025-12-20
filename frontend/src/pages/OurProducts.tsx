@@ -23,7 +23,7 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  category: string;
+  category: string | { _id: string; name: string };
   images: string[];
   stock: number;
 }
@@ -130,9 +130,17 @@ export const OurProducts = () => {
       filtered = filtered.filter((p) => {
         const nameMatch = p.name.toLowerCase().includes(query);
         const descMatch = p.description.toLowerCase().includes(query);
-        const catMatch = p.category.toLowerCase().includes(query);
+
+        const categoryName =
+          typeof p.category === "string"
+            ? p.category
+            : p.category?.name || "";
+
+        const catMatch = categoryName.toLowerCase().includes(query);
+
         return nameMatch || descMatch || catMatch;
       });
+
     }
     switch (sortBy) {
       case "price-asc":
