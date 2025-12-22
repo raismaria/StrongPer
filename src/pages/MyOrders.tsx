@@ -6,14 +6,17 @@ import api from "../utils/api";
 import { motion } from "framer-motion";
 
 interface OrderItem {
-  product: {
+  productId: {
     _id: string;
     name: string;
     price: number;
     images: string[];
   };
-  qty: number;
+  name: string;
   price: number;
+  quantity: number;
+  image: string;
+  _id: string;
 }
 
 interface Order {
@@ -21,12 +24,14 @@ interface Order {
   items: OrderItem[];
   total: number;
   status: string;
+  email: string;
+  phone: string;
   shippingAddress: {
-    fullName: string;
-    email: string;
-    phone: string;
+    firstName: string;
+    lastName: string;
     address: string;
     city: string;
+    state: string;
     zipCode: string;
   };
   createdAt: string;
@@ -203,28 +208,28 @@ const MyOrders = () => {
                     <div className="space-y-3">
                       {order.items.map((item) => (
                         <div
-                          key={item.product._id}
+                          key={item._id}
                           className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg"
                         >
                           <img
                             src={
-                              item.product.images[0] ||
+                              item.productId.images[0] ||
                               "https://via.placeholder.com/80"
                             }
-                            alt={item.product.name}
+                            alt={item.productId.name}
                             className="w-16 h-16 object-cover rounded"
                           />
                           <div className="flex-1">
                             <p className="font-semibold text-gray-900">
-                              {item.product.name}
+                              {item.productId.name}
                             </p>
                             <p className="text-sm text-gray-600">
-                              Qty: {item.qty}
+                              Qty: {item.quantity}
                             </p>
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-gray-900">
-                              ${(item.price * item.qty).toFixed(2)}
+                              ${(item.price * item.quantity).toFixed(2)}
                             </p>
                             <p className="text-sm text-gray-600">
                               ${item.price.toFixed(2)} each
@@ -243,15 +248,17 @@ const MyOrders = () => {
                       </h3>
                       <div className="text-sm text-gray-700">
                         <p className="font-semibold">
-                          {order.shippingAddress.fullName}
+                          {order.shippingAddress.firstName}{" "}
+                          {order.shippingAddress.lastName}
                         </p>
                         <p>{order.shippingAddress.address}</p>
                         <p>
                           {order.shippingAddress.city},{" "}
+                          {order.shippingAddress.state}{" "}
                           {order.shippingAddress.zipCode}
                         </p>
-                        <p>{order.shippingAddress.phone}</p>
-                        <p>{order.shippingAddress.email}</p>
+                        <p>{order.phone}</p>
+                        <p>{order.email}</p>
                       </div>
                     </div>
                   )}
@@ -260,7 +267,7 @@ const MyOrders = () => {
                   <div className="p-6 flex items-center justify-between bg-white">
                     <div
                       className={`px-4 py-2 rounded-lg font-semibold flex items-center gap-2 ${getStatusColor(
-                        order.status
+                        order.status,
                       )}`}
                     >
                       {getStatusIcon(order.status)}

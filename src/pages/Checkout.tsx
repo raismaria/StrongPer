@@ -142,22 +142,17 @@ const CheckoutPage = () => {
 
       console.log("orderData: ", orderData);
 
-      try {
-        // Submit order to backend
-        const response = await api.post("/orders", orderData);
-        console.log("Order response:", response.data);
-      } catch (error) {
-        alert("Error submitting order to the server.");
-        return;
-      }
+      // Submit order to backend
+      const response = await api.post("/orders", orderData);
+      console.log("Order response:", response.data);
 
       // Clear cart
       clearCart();
 
       // Redirect to orders page
       navigate("/orders");
-    } catch (error) {
-      console.error("Order submission error:", error);
+    } catch (err) {
+      console.error("Order submission error:", err);
       alert("Failed to submit order. Please try again.");
     } finally {
       setIsLoading(false);
