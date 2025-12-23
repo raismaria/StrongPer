@@ -90,6 +90,7 @@ export const OurProducts = () => {
     "newest",
   );
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -232,9 +233,122 @@ export const OurProducts = () => {
           </motion.div>
         </motion.div>
 
+        {/* Mobile Filter Button - Fixed at bottom */}
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          onClick={() => setShowMobileFilter(true)}
+          className="lg:hidden fixed bottom-6 right-6 z-40 flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-full shadow-2xl hover:shadow-blue-400/50 transition-all font-bold"
+        >
+          <FaFilter className="w-5 h-5" />
+          <span>Filter</span>
+          {selectedCategory !== "All Categories" && (
+            <span className="ml-1 px-2 py-1 bg-white text-blue-600 rounded-full text-xs font-bold">
+              1
+            </span>
+          )}
+        </motion.button>
+
+        {/* Mobile Filter Modal */}
+        <AnimatePresence>
+          {showMobileFilter && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowMobileFilter(false)}
+                className="lg:hidden fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
+              />
+
+              {/* Modal Content */}
+              <motion.div
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl max-h-[80vh] overflow-y-auto"
+              >
+                <div className="p-6 space-y-6">
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between pb-4 border-b-2 border-blue-200">
+                    <div className="flex items-center gap-3">
+                      <FaFilter className="w-6 h-6 text-blue-600" />
+                      <h2 className="text-2xl font-bold text-navy">
+                        Filter by Category
+                      </h2>
+                    </div>
+                    <button
+                      onClick={() => setShowMobileFilter(false)}
+                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <FaXmark className="w-6 h-6 text-navy" />
+                    </button>
+                  </div>
+
+                  {/* Category List */}
+                  <div className="space-y-2">
+                    {CATEGORIES.map((category) => {
+                      const CategoryIcon = category.icon;
+                      return (
+                        <motion.button
+                          key={category.name}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => {
+                            setSelectedCategory(category.name);
+                            setShowMobileFilter(false);
+                          }}
+                          className={`w-full flex items-center gap-3 px-4 py-4 rounded-lg font-medium transition-all ${
+                            selectedCategory === category.name
+                              ? "bg-gradient-to-r from-blue-600 to-blue-400 text-white shadow-lg"
+                              : "bg-gray-50 text-navy hover:bg-blue-50 border-2 border-transparent hover:border-blue-300"
+                          }`}
+                        >
+                          <CategoryIcon className="w-5 h-5" />
+                          <span className="text-base">{category.name}</span>
+                          {selectedCategory === category.name && (
+                            <span className="ml-auto text-white">✓</span>
+                          )}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Clear Filters Button */}
+                  {(selectedCategory !== "All Categories" || searchQuery) && (
+                    <motion.button
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setSelectedCategory("All Categories");
+                        setSearchQuery("");
+                        setShowMobileFilter(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-4 rounded-lg bg-red-50 text-red-600 transition-all font-bold border-2 border-red-300"
+                    >
+                      <FaXmark className="w-5 h-5" />
+                      Clear All Filters
+                    </motion.button>
+                  )}
+
+                  {/* Apply Button */}
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowMobileFilter(false)}
+                    className="w-full px-4 py-4 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-lg font-bold shadow-lg"
+                  >
+                    Apply Filter
+                  </motion.button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
         {/* Main Content with Sidebar */}
         <div className="flex gap-8">
-          {/* Left Sidebar - Categories Filter */}
+          {/* Left Sidebar - Categories Filter (Desktop Only) */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

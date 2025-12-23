@@ -5,15 +5,22 @@ import api from "../utils/api";
 
 interface Order {
   _id: string;
-  orderNumber: string;
-  totalAmount: number;
+  orderNumber?: string;
+  total: number;
   status: string;
   createdAt: string;
   items: Array<{
-    productId: string;
-    productName: string;
+    productId: {
+      _id: string;
+      name: string;
+      price: number;
+      images: string[];
+    };
+    name: string;
     quantity: number;
     price: number;
+    image: string;
+    _id: string;
   }>;
 }
 
@@ -215,7 +222,7 @@ const ProfilePage = () => {
                               day: "numeric",
                               hour: "2-digit",
                               minute: "2-digit",
-                            }
+                            },
                           )}
                         </span>
                       </td>
@@ -224,8 +231,8 @@ const ProfilePage = () => {
                           {order.items.length} item(s)
                           <div className="text-sm text-gray-500 mt-1">
                             {order.items.map((item) => (
-                              <div key={item.productId}>
-                                {item.productName} (x{item.quantity})
+                              <div key={item._id}>
+                                {item.name} (x{item.quantity})
                               </div>
                             ))}
                           </div>
@@ -233,7 +240,7 @@ const ProfilePage = () => {
                       </td>
                       <td className="py-4 px-4">
                         <span className="font-bold text-gray-900">
-                          ${order.totalAmount.toFixed(2)}
+                          ${order.total.toFixed(2)}
                         </span>
                       </td>
                       <td className="py-4 px-4">
@@ -242,10 +249,10 @@ const ProfilePage = () => {
                             order.status === "completed"
                               ? "bg-green-100 text-green-800"
                               : order.status === "pending"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : order.status === "cancelled"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-blue-100 text-blue-800"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : order.status === "cancelled"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-blue-100 text-blue-800"
                           }`}
                         >
                           {order.status.charAt(0).toUpperCase() +

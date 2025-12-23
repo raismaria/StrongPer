@@ -8,8 +8,9 @@ import DashboardOverview from "../components/Admin/DashboardOverview.tsx";
 import ProductManagement from "../components/Admin/ProductManagement.tsx";
 import CategoryManagement from "../components/Admin/CategoryManagement.tsx";
 import UserManagement from "../components/Admin/UserManagement.tsx";
+import OrderManagement from "../components/Admin/OrderManagement.tsx";
 
-type DashboardTab = "overview" | "products" | "categories" | "users";
+type DashboardTab = "overview" | "products" | "categories" | "orders" | "users";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ const Dashboard = () => {
             {activeTab === "overview" && <DashboardOverview />}
             {activeTab === "products" && <ProductManagement />}
             {activeTab === "categories" && <CategoryManagement />}
+            {activeTab === "orders" && <OrderManagement />}
             {activeTab === "users" && <UserManagement />}
           </div>
         </div>

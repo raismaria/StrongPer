@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-type TabType = "overview" | "products" | "categories" | "users";
+type TabType = "overview" | "products" | "categories" | "orders" | "users";
 
 interface DashboardSidebarProps {
   activeTab: TabType;
@@ -15,10 +15,11 @@ const DashboardSidebar = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { id: "overview", label: "Overview", icon: "" },
-    { id: "products", label: "Products", icon: "" },
-    { id: "categories", label: "Categories", icon: "" },
-    { id: "users", label: "Users", icon: "" },
+    { id: "overview", label: "Overview", icon: "📊" },
+    { id: "products", label: "Products", icon: "📦" },
+    { id: "categories", label: "Categories", icon: "🏷️" },
+    { id: "orders", label: "Orders", icon: "🛒" },
+    { id: "users", label: "Users", icon: "👥" },
   ];
 
   return (

@@ -274,12 +274,12 @@ const MyOrders = () => {
                       {order.status.charAt(0).toUpperCase() +
                         order.status.slice(1)}
                     </div>
-                    <button
+                    {/*<button
                       onClick={() => navigate(`/orders/${order._id}`)}
                       className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
                     >
                       View Details →
-                    </button>
+                    </button>*/}
                   </div>
                 </motion.div>
               ))}
